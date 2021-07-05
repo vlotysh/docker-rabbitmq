@@ -26,7 +26,7 @@ services:
           context: .
           dockerfile: ./docker-images/php-extended/Dockerfile
         image: "php-fpm"
-        container_name: "php-fpm"
+        container_name: "php-fpm-rabbitmq"
         env_file:
           - docker.env
         restart: always

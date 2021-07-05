@@ -2,18 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
+use RabbitMQApp\WorkerSender;
 
-$connection = new AMQPStreamConnection('rabbitmq', 5672, 'admin', 'adminpass');
-$channel = $connection->channel();
-
-$channel->queue_declare('hello', false, false, false, false);
-
-$msg = new AMQPMessage('Hello World!');
-$channel->basic_publish($msg, '', 'hello');
-
-echo " [x] Sent 'Hello World!'\n";
-
-$channel->close();
-$connection->close();
+$sender = new WorkerSender();
+$sender->execute('Text for sending');

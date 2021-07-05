@@ -52,7 +52,7 @@ composer)
     ;;
 execute)
     shift
-    execute_container_command php-fpm "$@"
+    execute_container_command php-fpm-rabbitmq "$@"
     ;;
 list_queues)
     shift
