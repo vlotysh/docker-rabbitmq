@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use RabbitMQApp\WorkerReceiver;
+use RabbitMQApp\MessageWorkerConsumer;
 
-$reciver = new WorkerReceiver();
+$reciver = new MessageWorkerConsumer();
 $reciver->listen();

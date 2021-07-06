@@ -5,12 +5,13 @@ namespace RabbitMQApp;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use RabbitMQApp\config\AMPQConnectionConfig;
 
 /**
  * Class BaseAMQP
  * @package App
  */
-abstract class BaseAMQP
+abstract class BaseWorker
 {
     /**
      * @var AMQPStreamConnection
@@ -27,7 +28,12 @@ abstract class BaseAMQP
      */
     public function __construct()
     {
-        $this->connection = new AMQPStreamConnection('rabbitmq', 5672, 'admin', 'adminpass');
+        $this->connection = new AMQPStreamConnection(
+            AMPQConnectionConfig::HOST,
+            AMPQConnectionConfig::POST,
+            AMPQConnectionConfig::USERNAME,
+            AMPQConnectionConfig::PASSWORD,
+        );
         $this->channel = $this->connection->channel();
     }
 

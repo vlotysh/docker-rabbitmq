@@ -7,12 +7,9 @@ use PhpAmqpLib\Message\AMQPMessage;
 /**
  * Class WorkerSender
  */
-class WorkerSender extends BaseAMQP
+class MessageWorkerSender extends BaseWorker implements ProducerInterface
 {
-    /**
-     * @param string $text
-     */
-    public function execute(string $text)
+    public function send(string $data): void
     {
         $this->channel->queue_declare(
             'messages',    #queue - Queue names may be up to 255 bytes of UTF-8 characters
@@ -23,8 +20,8 @@ class WorkerSender extends BaseAMQP
         );
 
         $msg = new AMQPMessage(
-            $text,
-            array('delivery_mode' => 2) # make message persistent, so it is not lost if server crashes or quits
+            $data,
+            array('delivery_mode' => 2)
         );
 
         $this->channel->basic_publish(

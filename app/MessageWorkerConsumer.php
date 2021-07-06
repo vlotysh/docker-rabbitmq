@@ -8,12 +8,12 @@ use PhpAmqpLib\Message\AMQPMessage;
  * Class WorkerReceiver
  * @package App
  */
-class WorkerReceiver extends BaseAMQP
+class MessageWorkerConsumer extends BaseWorker implements ConsumerInterface
 {
     /**
      * @throws \ErrorException
      */
-    public function listen()
+    public function listen(): void
     {
         $this->channel->queue_declare(
             'messages',    #queue - Queue names may be up to 255 bytes of UTF-8 characters
@@ -52,15 +52,16 @@ class WorkerReceiver extends BaseAMQP
      */
     public function process(AMQPMessage $msg)
     {
-        echo "sleep 10 min", "\n";
-        sleep(10);
-        echo $msg->body, "\n";
+        echo ' [x] Received ', $msg->body, "\n";
+        sleep(substr_count($msg->body, '.'));
+        echo " [x] Done\n";
+
         /**
          * If a consumer dies without sending an acknowledgement the AMQP broker
          * will redeliver it to another consumer or, if none are available at the
          * time, the broker will wait until at least one consumer is registered
          * for the same queue before attempting redelivery
          */
-        $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+        $msg->ack();
     }
 }
