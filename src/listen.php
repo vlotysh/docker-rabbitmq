@@ -45,7 +45,9 @@ $channel->basic_consume(
             $worker = new $class;
             $worker->work(new \RabbitMQApp\Message\MQMessage($msg->body));
         } catch (\Throwable $e) {
+            echo($e->getMessage());
             $msg->nack(true);
+            exit();
         }
 
         $msg->ack();

@@ -2,8 +2,8 @@
 
 namespace RabbitMQApp\Workers;
 
+use RabbitMQApp\Logger;
 use RabbitMQApp\Message\MessageInterface;
-use RabbitMQApp\Resolver;
 
 /**
  * Class LogWorker
@@ -13,7 +13,7 @@ class LogWorker implements WorkerInterface
 {
     public function work(MessageInterface $message): void
     {
-        $es = new Resolver();
-        $es->resolve($message, 'Log');
+        $logger = new Logger();
+        $logger->log($message->getBody(), 'Log');
     }
 }
